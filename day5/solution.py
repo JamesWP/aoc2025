@@ -44,6 +44,9 @@ class Fresh:
     def __repr__(self):
         return str(self.ranges)
     
+    def __len__(self):
+        return sum(end-start+1 for (start, end) in self.ranges)
+    
     def check(self):
         le = None
         for range in self.ranges:
@@ -93,11 +96,27 @@ assert 100 not in fresh
 assert 0 not in fresh
 
 def part2(inpt):
-    return 0
+    (first, second) = inpt.split("\n\n")
+    (first, second) = (first.splitlines(), second.splitlines())
+
+    first = [(int(f.split("-")[0]), int(f.split("-")[1])) for f in first ]
+    first.sort()
+
+    # print(first[0])
+    # print(first[-1])
+
+    fresh = Fresh()
+
+    for (s,e) in first:
+        fresh.add(s,e)
+
+    fresh.check()
+
+    return len(fresh)
 
 if __name__ == "__main__":
     print()
     assert part1(EXAMPLE) == 3
-    assert part2(EXAMPLE) == 0
+    assert part2(EXAMPLE) == 14
     print(part1(INPUT))
     print(part2(INPUT))
